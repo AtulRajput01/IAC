@@ -1,0 +1,17 @@
+# Terraform directories
+**/.terraform/*
+terraform.tfstate
+terraform.tfstate.*
+
+# Lock files
+.terraform.lock.hcl
+
+# Terraform variable files
+*.tfvars
+*.tfvars.json
+
+# Provider binaries
+terraform-provider-aws*
+
+# Ignore plan files
+*.tfplan
