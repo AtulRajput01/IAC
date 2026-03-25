@@ -13,18 +13,9 @@ terraform {
 
 provider "aws" {
   region = "us-east-1"
-}
-
-# Create a random suffix
-resource "random_string" "bucket_suffix" {
-  length  = 8
-  special = false
-  upper   = false
-}
-
-# Create S3 bucket
+} # Create S3 bucket
 resource "aws_s3_bucket" "my_bucket" {
-  bucket        = "${var.bucket_prefix}-${random_string.bucket_suffix.result}"
+  bucket        = var.bucket_name
   force_destroy = true
 
   tags = {
@@ -46,7 +37,7 @@ resource "aws_s3_bucket_public_access_block" "my_bucket" {
 # Add bucket policy
 resource "aws_s3_bucket_policy" "bucket_policy" {
   depends_on = [aws_s3_bucket_public_access_block.my_bucket]
-  bucket = aws_s3_bucket.my_bucket.id
+  bucket     = aws_s3_bucket.my_bucket.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -79,4 +70,4 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
       days = 365
     }
   }
-} 
+}
